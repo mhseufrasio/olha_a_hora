@@ -11,3 +11,8 @@ class PosologiaModel(db.Model):
     id_medicamento = db.Column(db.Integer, db.ForeignKey("medicamentos.id"), nullable=False)
     id_via = db.Column(db.Integer, db.ForeignKey("vias.id"), nullable=False)
     id_usuario = db.Column(db.Integer, db.ForeignKey("usuarios.id"), nullable=False)
+
+    paciente = db.relationship("PacienteModel", back_populates="posologias")
+    medicamento = db.relationship("MedicamentoModel", back_populates="posologias")
+    via = db.relationship("ViaModel", back_populates="posologias")
+    usuario = db.relationship("UsuarioModel", back_populates="posologias")

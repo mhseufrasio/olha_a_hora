@@ -11,3 +11,5 @@ class PacienteModel(db.Model):
     id_usuario = db.Column(db.Integer, db.ForeignKey("usuarios.id"))
 
     usuario = db.relationship("UsuarioModel", back_populates="pacientes")
+
+    posologias = db.relationship("PosologiaModel", back_populates="pacientes", lazy="dynamic")
