@@ -4,3 +4,7 @@ sqlalchemy
 flask-jwt-extended
 flask-migrate
 marshmallow
+Flask-OAuth
+flask_oauthlib
+python_dotenv
+alembic
