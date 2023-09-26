@@ -1,15 +1,15 @@
 from marshmallow import Schema, fields
-from schemas.usuario import PlainUsuarioSchema
+from schemas.user import PlainUserSchema
 
 
-class PlainPacienteSchema(Schema):
+class PlainPatientSchema(Schema):
     id = fields.Int(dump_only=True)
-    nome = fields.Str(required=True)
-    data_nascimento = fields.DateTime(required=True, format="%d%m%Y")
-    observacao = fields.Str(required=True)
+    name = fields.Str(required=True)
+    birth_date = fields.DateTime(required=True, format="%d%m%Y")
+    observacion = fields.Str(required=True)
 
 
-class PacienteSchema(PlainPacienteSchema):
-    id_usuario = fields.Int(load_only=True, required=True)
+class PacienteSchema(PlainPatientSchema):
+    user_id = fields.Int(load_only=True, required=True)
 
-    usuario = fields.Nested(PlainUsuarioSchema(), dumpy_only=True)
+    user = fields.Nested(PlainUserSchema(), dumpy_only=True)

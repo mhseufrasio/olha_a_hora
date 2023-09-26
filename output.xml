@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.10.12 on linux)" generated="20230926 11:31:39.257" rpa="false" schemaversion="4">
+<suite id="s1" name="Modelo" source="/home/lasic/PycharmProjects/olha_a_hora/tests/modelo.robot">
+<test id="s1-t1" name="Cenário 1: Teste de abrir navegador" line="12">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://www.youtube.com/watch?v=gyHlGC_ag1o&amp;list=PL5ipcSFH2tk8RWxtvuaOK-qpdAvlWkSoo&amp;index=4</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20230926 11:31:39.377" level="INFO">Opening browser 'firefox' to base url 'https://www.youtube.com/watch?v=gyHlGC_ag1o&amp;list=PL5ipcSFH2tk8RWxtvuaOK-qpdAvlWkSoo&amp;index=4'.</msg>
+<msg timestamp="20230926 11:31:58.146" level="INFO">Cannot capture screenshot because no browser is open.</msg>
+<msg timestamp="20230926 11:31:58.146" level="FAIL">WebDriverException: Message: Process unexpectedly closed with status 1
+</msg>
+<status status="FAIL" starttime="20230926 11:31:39.376" endtime="20230926 11:31:58.147"/>
+</kw>
+<status status="FAIL" starttime="20230926 11:31:39.375" endtime="20230926 11:31:58.148">WebDriverException: Message: Process unexpectedly closed with status 1
+</status>
+</test>
+<status status="FAIL" starttime="20230926 11:31:39.257" endtime="20230926 11:31:58.148"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" skip="0" id="s1" name="Modelo">Modelo</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
