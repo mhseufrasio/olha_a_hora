@@ -1,21 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.1.1 (Python 3.10.12 on linux)" generated="20230926 11:31:39.257" rpa="false" schemaversion="4">
-<suite id="s1" name="Modelo" source="/home/lasic/PycharmProjects/olha_a_hora/tests/modelo.robot">
-<test id="s1-t1" name="Cenário 1: Teste de abrir navegador" line="12">
+<robot generator="Robot 6.1.1 (Python 3.10.12 on linux)" generated="20230927 16:11:40.276" rpa="false" schemaversion="4">
+<suite id="s1" name="Formulario Presenca" source="/home/lasic/PycharmProjects/olha_a_hora/tests/formulario_presenca.robot">
+<test id="s1-t1" name="Cenário 1: Preencher formulário" line="49">
+<kw name="abrir site para teste">
 <kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.youtube.com/watch?v=gyHlGC_ag1o&amp;list=PL5ipcSFH2tk8RWxtvuaOK-qpdAvlWkSoo&amp;index=4</arg>
+<arg>https://forms.gle/HcQALhH8VNh7gtxG6</arg>
 <arg>${BROWSER}</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20230926 11:31:39.377" level="INFO">Opening browser 'firefox' to base url 'https://www.youtube.com/watch?v=gyHlGC_ag1o&amp;list=PL5ipcSFH2tk8RWxtvuaOK-qpdAvlWkSoo&amp;index=4'.</msg>
-<msg timestamp="20230926 11:31:58.146" level="INFO">Cannot capture screenshot because no browser is open.</msg>
-<msg timestamp="20230926 11:31:58.146" level="FAIL">WebDriverException: Message: Process unexpectedly closed with status 1
-</msg>
-<status status="FAIL" starttime="20230926 11:31:39.376" endtime="20230926 11:31:58.147"/>
+<msg timestamp="20230927 16:11:40.407" level="INFO">Opening browser 'chrome' to base url 'https://forms.gle/HcQALhH8VNh7gtxG6'.</msg>
+<status status="PASS" starttime="20230927 16:11:40.406" endtime="20230927 16:11:43.993"/>
 </kw>
-<status status="FAIL" starttime="20230926 11:31:39.375" endtime="20230926 11:31:58.148">WebDriverException: Message: Process unexpectedly closed with status 1
+<status status="PASS" starttime="20230927 16:11:40.406" endtime="20230927 16:11:43.993"/>
+</kw>
+<kw name="fazer login">
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${email_validacao}</arg>
+<arg>${EMAIL}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20230927 16:11:43.995" level="INFO">Typing text 'matheus.henrique.santos60@aluno.ifce.edu.br' into text field '//*[@id="identifierId"]'.</msg>
+<status status="PASS" starttime="20230927 16:11:43.994" endtime="20230927 16:11:44.194"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>${BOTAO_AVANCE1}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20230927 16:11:44.196" level="INFO">Clicking element '//*[@id="identifierNext"]'.</msg>
+<status status="PASS" starttime="20230927 16:11:44.194" endtime="20230927 16:11:44.345"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20230927 16:11:49.346" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" starttime="20230927 16:11:44.346" endtime="20230927 16:11:49.346"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>${INPUT_PASSWORD}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20230927 16:11:49.347" level="INFO">Clicking element '//*[@id="password"]'.</msg>
+<status status="PASS" starttime="20230927 16:11:49.346" endtime="20230927 16:11:49.392"/>
+</kw>
+<kw name="Input Password" library="SeleniumLibrary">
+<arg>${INPUT_PASSWORD}</arg>
+<arg>${PASSWORD}</arg>
+<doc>Types the given password into the text field identified by ``locator``.</doc>
+<msg timestamp="20230927 16:11:49.393" level="INFO">Typing password into text field '//*[@id="password"]'.</msg>
+<msg timestamp="20230927 16:11:49.523" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-25.png"&gt;&lt;img src="selenium-screenshot-25.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20230927 16:11:49.523" level="FAIL">InvalidElementStateException: Message: invalid element state
+  (Session info: chrome=114.0.5735.90)
+Stacktrace:
+#0 0x55deedafc4e3 &lt;unknown&gt;
+#1 0x55deed82bb00 &lt;unknown&gt;
+#2 0x55deed860143 &lt;unknown&gt;
+#3 0x55deed887012 &lt;unknown&gt;
+#4 0x55deed85db03 &lt;unknown&gt;
+#5 0x55deed8871de &lt;unknown&gt;
+#6 0x55deed89f30e &lt;unknown&gt;
+#7 0x55deed886de3 &lt;unknown&gt;
+#8 0x55deed85c2dd &lt;unknown&gt;
+#9 0x55deed85d34e &lt;unknown&gt;
+#10 0x55deedabc3e4 &lt;unknown&gt;
+#11 0x55deedac03d7 &lt;unknown&gt;
+#12 0x55deedacab20 &lt;unknown&gt;
+#13 0x55deedac1023 &lt;unknown&gt;
+#14 0x55deeda8f1aa &lt;unknown&gt;
+#15 0x55deedae56b8 &lt;unknown&gt;
+#16 0x55deedae5847 &lt;unknown&gt;
+#17 0x55deedaf5243 &lt;unknown&gt;
+#18 0x7f1068c94b43 &lt;unknown&gt;
+</msg>
+<status status="FAIL" starttime="20230927 16:11:49.393" endtime="20230927 16:11:49.524"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>${BOTAO_AVANCE2}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20230927 16:11:49.524" endtime="20230927 16:11:49.524"/>
+</kw>
+<status status="FAIL" starttime="20230927 16:11:43.993" endtime="20230927 16:11:49.524"/>
+</kw>
+<kw name="preencher campos">
+<status status="NOT RUN" starttime="20230927 16:11:49.525" endtime="20230927 16:11:49.525"/>
+</kw>
+<kw name="clicar em submit">
+<status status="NOT RUN" starttime="20230927 16:11:49.525" endtime="20230927 16:11:49.525"/>
+</kw>
+<kw name="fechar navegador">
+<status status="NOT RUN" starttime="20230927 16:11:49.525" endtime="20230927 16:11:49.525"/>
+</kw>
+<status status="FAIL" starttime="20230927 16:11:40.405" endtime="20230927 16:11:49.525">InvalidElementStateException: Message: invalid element state
+  (Session info: chrome=114.0.5735.90)
+Stacktrace:
+#0 0x55deedafc4e3 &lt;unknown&gt;
+#1 0x55deed82bb00 &lt;unknown&gt;
+#2 0x55deed860143 &lt;unknown&gt;
+#3 0x55deed887012 &lt;unknown&gt;
+#4 0x55deed85db03 &lt;unknown&gt;
+#5 0x55deed8871de &lt;unknown&gt;
+#6 0x55deed89f30e &lt;unknown&gt;
+#7 0x55deed886de3 &lt;unknown&gt;
+#8 0x55deed85c2dd &lt;unknown&gt;
+#9 0x55deed85d34e &lt;unknown&gt;
+#10 0x55deedabc3e4 &lt;unknown&gt;
+#11 0x55deedac03d7 &lt;unknown&gt;
+#12 0x55deedacab20 &lt;unknown&gt;
+#13 0x55deedac1023 &lt;unknown&gt;
+#14 0x55deeda8f1aa &lt;unknown&gt;
+#15 0x55deedae56b8 &lt;unknown&gt;
+#16 0x55deedae5847 &lt;unknown&gt;
+#17 0x55deedaf5243 &lt;unknown&gt;
+#18 0x7f1068c94b43 &lt;unknown&gt;
 </status>
 </test>
-<status status="FAIL" starttime="20230926 11:31:39.257" endtime="20230926 11:31:58.148"/>
+<status status="FAIL" starttime="20230927 16:11:40.277" endtime="20230927 16:11:49.526"/>
 </suite>
 <statistics>
 <total>
@@ -24,7 +118,7 @@
 <tag>
 </tag>
 <suite>
-<stat pass="0" fail="1" skip="0" id="s1" name="Modelo">Modelo</stat>
+<stat pass="0" fail="1" skip="0" id="s1" name="Formulario Presenca">Formulario Presenca</stat>
 </suite>
 </statistics>
 <errors>
