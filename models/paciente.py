@@ -5,10 +5,10 @@ class PacienteModel(db.Model):
     __tablename__ = "pacientes"
 
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(255), unique=True, nullable=False)
-    data_nascimento = db.Column(db.DateTime, nullable=False)
-    observacao = db.Column(db.String(255), nullable=True)
-    id_usuario = db.Column(db.Integer, db.ForeignKey("usuarios.id"))
+    name = db.Column(db.String(255), unique=True, nullable=False)
+    birth_date = db.Column(db.DateTime, nullable=False)
+    observation = db.Column(db.String(255), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("usuarios.id"))
 
     usuario = db.relationship("UsuarioModel", back_populates="pacientes")
 

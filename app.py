@@ -1,18 +1,21 @@
 import os
 
 from flask_oauthlib.provider import OAuth2Provider
-from flask import Flask, json
+from flask import Flask, json, render_template
 from flask_migrate import Migrate
 from flask_smorest import Api
 from db import db
 from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
+from controllers.patient import blp as PatientBlueprint
 
 
 def create_app(db_url=None):
     app = Flask(__name__)
 
+    load_dotenv()
     app.config["PROPAGATE_EXCEPTIONS"] = True
-    app.config["API_TITLE"] = "Estudo REST API"
+    app.config["API_TITLE"] = "Olha A Hora"
     app.config["API_VERSION"] = "v1"
     app.config["OPENAPI_VERSION"] = "3.0.3"
     app.config["OPENAPI_URL_PREFIX"] = "/"
@@ -24,4 +27,4 @@ def create_app(db_url=None):
     migrate = Migrate(app, db)
     api = Api(app)
 
-    return app
+    api.register_blueprint(PatientBlueprint)

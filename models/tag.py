@@ -8,4 +8,4 @@ class EtiquetaModel(db.Model):
     color = db.Column(db.String(255), unique=True, nullable=False)
     hex = db.Column(db.String(255), unique=True, nullable=False)
 
-    schedule = db.relationship("ScheduleModel", back_populates="tags", lazy="dynamic")
+    horario = db.relationship("HorarioModel", back_populates="tag", lazy="dynamic")
