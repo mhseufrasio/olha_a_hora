@@ -8,3 +8,4 @@ Flask-OAuth
 flask_oauthlib
 python_dotenv
 alembic
+psycopg2-binary

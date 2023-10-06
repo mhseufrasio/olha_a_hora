@@ -11,7 +11,14 @@ from controllers.patient import blp as PatientBlueprint
 
 
 def create_app(db_url=None):
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="templates")
+
+    @app.route("/")
+    def index():
+        return render_template('index.html')
+
+    if __name__ == "__main__":
+        app.run()
 
     load_dotenv()
     app.config["PROPAGATE_EXCEPTIONS"] = True
@@ -28,3 +35,4 @@ def create_app(db_url=None):
     api = Api(app)
 
     api.register_blueprint(PatientBlueprint)
+    return app
