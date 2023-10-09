@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, jsonify, request
 from flask_smorest import Blueprint, abort
 from flask.views import MethodView
 from schemas.paciente import PatientSchema, PlainPatientSchema, PatientUpdateSchema
@@ -9,7 +9,7 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 blp = Blueprint("Patients", __name__, description="Patients operations")
 
 
-@blp.route("/")
+@blp.route("/patients")
 class Patients(MethodView):
     @blp.response(200, PlainPatientSchema)
     def get(self):

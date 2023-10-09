@@ -1,25 +1,24 @@
 import os
+import pathlib
 
-from flask_oauthlib.provider import OAuth2Provider
-from flask import Flask, json, render_template
+import requests
+import google.auth.transport.requests
+from google_auth_oauthlib.flow import Flow
+
+from flask import Flask, render_template, request, url_for, redirect, session, abort
 from flask_migrate import Migrate
 from flask_smorest import Api
 from db import db
 from dotenv import load_dotenv
-from flask_sqlalchemy import SQLAlchemy
 from controllers.patient import blp as PatientBlueprint
+from models import PacienteModel
+
+from pip._vendor import cachecontrol
+from google.oauth2 import id_token
 
 
 def create_app(db_url=None):
     app = Flask(__name__, template_folder="templates")
-
-    @app.route("/")
-    def index():
-        return render_template('index.html')
-
-    if __name__ == "__main__":
-        app.run()
-
     load_dotenv()
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Olha A Hora"
@@ -33,6 +32,101 @@ def create_app(db_url=None):
     db.init_app(app)
     migrate = Migrate(app, db)
     api = Api(app)
+
+    client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+
+    flow = Flow.from_client_secrets_file(
+        client_secrets_file=client_secrets_file,
+        scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
+        redirect_uri="http://127.0.0.1:5000/login/callback"
+    )
+    app.secret_key = "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"
+    GOOGLE_CLIENT_ID = "769885220922-1mrnk17gnvu5oel23g95p0cn0r3uea02.apps.googleusercontent.com"
+
+    def login_is_required(function):
+        def wrapper(*args, **kwargs):
+            if "google_id" not in session:
+                return abort(401)
+            else:
+                return function()
+
+        return wrapper
+
+    @app.route("/", endpoint="index")
+    def index():
+        return render_template('login.html')
+
+    @app.route("/home", endpoint="home")
+    @login_is_required
+    def home():
+        all_patients = PacienteModel.query.all()
+        return render_template('index.html', patients=all_patients)
+
+    @app.route("/login")
+    def login():
+        authorization_url, state = flow.authorization_url()
+        session["state"] = state
+        return redirect(authorization_url)
+
+    @app.route("/logout", endpoint="logout")
+    def logout():
+        session.clear()
+        return redirect(url_for('index'))
+
+    @app.route("/login/callback", endpoint="google_callback")
+    def callback():
+        flow.fetch_token(authorization_response=request.url)
+
+        if not session["state"] == request.args["state"]:
+            abort(500)  # State does not match!
+
+        credentials = flow.credentials
+        request_session = requests.session()
+        cached_session = cachecontrol.CacheControl(request_session)
+        token_request = google.auth.transport.requests.Request(session=cached_session)
+
+        id_info = id_token.verify_oauth2_token(
+            id_token=credentials._id_token,
+            request=token_request,
+            audience=GOOGLE_CLIENT_ID
+        )
+
+        session["google_id"] = id_info.get("sub")
+        session["name"] = id_info.get("name")
+        return redirect(url_for('home'))
+
+    @app.route("/add_patient", methods=["POST"], endpoint="add_patient")
+    @login_is_required
+    def add_patient():
+        patient = PacienteModel()
+        patient.name = request.form['name']
+        patient.birth_date = request.form['birth_date']
+        patient.observation = request.form['observation']
+        patient.user_id = request.form['user_id']
+        db.session.add(patient)
+        db.session.commit()
+        return redirect(url_for('home'))
+
+    @app.route("/update", methods=["POST"], endpoint="update_patient")
+    @login_is_required
+    def update_patient():
+        patient = PacienteModel.query.get(request.form['id'])
+        patient.name = request.form['name_edit']
+        patient.birth_date = request.form['birth_date_edit']
+        patient.observation = request.form['observation_edit']
+        db.session.commit()
+        return redirect(url_for('home'))
+
+    @app.route("/delete/<id>", endpoint="delete_by_id")
+    def delete_by_id(id):
+        patient = PacienteModel.query.get_or_404(id)
+        db.session.delete(patient)
+        db.session.commit()
+        return redirect(url_for('home'))
+
+    if __name__ == "__main__":
+        app.run()
 
     api.register_blueprint(PatientBlueprint)
     return app
