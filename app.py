@@ -1,3 +1,4 @@
+""" Aplicação em Flask Para o Controle de Horários de Tomada de Remédios"""
 import os
 import pathlib
 
@@ -6,18 +7,17 @@ import google.auth.transport.requests
 from google_auth_oauthlib.flow import Flow
 
 from flask import Flask, render_template, request, url_for, redirect, session, abort
-from flask_migrate import Migrate
 from flask_smorest import Api
-from db import db
 from dotenv import load_dotenv
+from pip._vendor import cachecontrol
+from google.oauth2 import id_token
+from db import db
 from controllers.patient import blp as PatientBlueprint
 from models import PacienteModel
 
-from pip._vendor import cachecontrol
-from google.oauth2 import id_token
-
 
 def create_app(db_url=None):
+    """Configurações da Aplicação e Rotas de Acesso"""
     app = Flask(__name__, template_folder="templates")
     load_dotenv()
     app.config["PROPAGATE_EXCEPTIONS"] = True
@@ -30,28 +30,21 @@ def create_app(db_url=None):
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
-    migrate = Migrate(app, db)
     api = Api(app)
 
     client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
-    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
     flow = Flow.from_client_secrets_file(
         client_secrets_file=client_secrets_file,
-        scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
+        scopes=["https://www.googleapis.com/auth/userinfo.profile",
+                "https://www.googleapis.com/auth/userinfo.email", "openid"],
         redirect_uri="http://127.0.0.1:5000/login/callback"
     )
-    app.secret_key = "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"
-    GOOGLE_CLIENT_ID = "769885220922-1mrnk17gnvu5oel23g95p0cn0r3uea02.apps.googleusercontent.com"
 
     def login_is_required(function):
-        def wrapper(*args, **kwargs):
-            if "google_id" not in session:
-                return abort(401)
-            else:
-                return function()
-
-        return wrapper
+        if "google_id" not in session:
+            return render_template('login.html')
+        return function()
 
     @app.route("/", endpoint="index")
     def index():
@@ -89,7 +82,7 @@ def create_app(db_url=None):
         id_info = id_token.verify_oauth2_token(
             id_token=credentials._id_token,
             request=token_request,
-            audience=GOOGLE_CLIENT_ID
+            audience="769885220922-1mrnk17gnvu5oel23g95p0cn0r3uea02.apps.googleusercontent.com"
         )
 
         session["google_id"] = id_info.get("sub")
@@ -119,8 +112,8 @@ def create_app(db_url=None):
         return redirect(url_for('home'))
 
     @app.route("/delete/<id>", endpoint="delete_by_id")
-    def delete_by_id(id):
-        patient = PacienteModel.query.get_or_404(id)
+    def delete_by_id(id_patient):
+        patient = PacienteModel.query.get_or_404(id_patient)
         db.session.delete(patient)
         db.session.commit()
         return redirect(url_for('home'))
