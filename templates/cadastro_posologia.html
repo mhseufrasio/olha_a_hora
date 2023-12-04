@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} Posologias {% endblock %}
+{% block body %}
+<form action="{{url_for('cadastrar_posologia')}}" method="POST">
+    <input class="form-control" name="paciente" list="paciente" id="pacienteDatalist" placeholder="Digite para pesquisar...">
+    <datalist id="paciente">
+        {% for row in pacientes %}
+        <option value="{{row.name}}"></option>
+        {% endfor %}
+    </datalist>
+
+    <input class="form-control" name="medicamento" list="medicamento" id="medicamentoDatalist" placeholder="Digite para pesquisar...">
+    <datalist id="medicamento">
+        {% for row in medicamentos %}
+        <option value="{{row.nome}}"></option>
+        {% endfor %}
+    </datalist>
+    <input type="number" name="frequencia" placeholder="Quantas vezes por dia"/>
+    <input type="number" name="duracao" placeholder="Número de dias"/>
+    <br/>
+    <input type="submit" value="Cadastrar"/>
+</form>
+{% endblock %}

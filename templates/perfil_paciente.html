@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %} Perfil do Paciente {% endblock %}
+{% block body %}
+<table class="table table-hover table-dark">
+    <tr>
+        <th>{{paciente.name}}</th>
+    </tr>
+    <tr>
+        <th>{{paciente.birth_date}}</th>
+    </tr>
+    <tr>
+        <th>{{paciente.observation}}</th>
+    </tr>
+</table>
+
+
+<table class="table table-hover table-dark">
+                    <tr>
+                        <th>Medicamento</th>
+                        <th>Frequência</th>
+                        <th>Duração(dias)</th>
+                    </tr>
+                    {% for row in posologias %}
+                    <tr>
+                        <td>{{row.medicamento.nome}}</td>
+                        <td>{{row.frequencia}}</td>
+                        <td>{{row.duracao}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+
+{% endblock %}

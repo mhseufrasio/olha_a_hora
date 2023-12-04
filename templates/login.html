@@ -1,5 +1,9 @@
 <form action="{{url_for('login')}}" method="POST">
-    <input type="text" name="cpf" placeholder="CPF"/>
+    <input type="text" name="cpf" placeholder="CPF do usuário"/>
     <input type="password" name="senha" placeholder="Senha"/>
-    <input type="submit" value="Entrar">
+    <input type="submit" value="Entrar"/>
+    <br/>
+    <a href="/register"> Não possui cadastro? Cadastre-se!</a>
+    <br/>
+    <a href="/login_acompanhante">É acompanhante? Clique aqui!</a>
 </form>

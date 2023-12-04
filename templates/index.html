@@ -3,12 +3,14 @@
 
 {% block title %} Home {% endblock %}
 {% block body %}
+<a href="/logout">Sair</a>
 <div class="container" xmlns="http://www.w3.org/1999/html">
     <div class="row">
         <div class="col md-12">
             <div class="jumbotron p-3">
                 <h2>Manage      <b>Pacientes</b>  <button type="button" class="btn btn-primary"
                 data-bs-toggle="modal" data-bs-target="#cadmodal">Cadastrar Paciente</button></h2>
+                <a href="/cadastrar_medicamentos">Cadastrar Horários</a>
                 <table class="table table-hover table-dark">
                     <tr>
                         <th>ID</th>
@@ -59,6 +61,7 @@
                             </div>
 
                             <a href="/delete/{{row.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Deseja efetuar exclusão?')">Excluir</a>
+                            <a href="/perfil_paciente/{{row.id}}" class="btn btn-warning btn-xs">Perfil</a>
                         </td>
                     </tr>
                     {% endfor %}
