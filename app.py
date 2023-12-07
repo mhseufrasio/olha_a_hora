@@ -37,23 +37,22 @@ def create_app(db_url=None):
     api = Api(app)
     Migrate(app=app, db=db, compare_type=True)
 
-    """def login_is_required(function):
-        if not session.get('user_id'):
-            return render_template('login.html')
-        return function()"""
-
     @app.route("/", endpoint="index")
     def index():
+        session['user_id'] = None
         return render_template('login.html')
 
     @app.route("/home", endpoint="home")
     # @login_is_required
     def home():
-        all_patients = PacienteModel.query.all()
-        return render_template('index.html', patients=all_patients)
+        if session['user_id'] is not None:
+            all_patients = PacienteModel.query.all()
+            return render_template('index.html', patients=all_patients)
+        return render_template('login.html')
 
     @app.route("/login", methods=["POST"], endpoint="login")
     def login():
+        session.pop('user_id', None)
         cpf = request.form["cpf"]
         senha = request.form["senha"]
         usuario = UsuarioModel.query.filter_by(cpf=cpf).first()
@@ -69,7 +68,7 @@ def create_app(db_url=None):
             codigo_acesso = request.form["codigo_acesso"]
             paciente = PacienteModel.query.filter_by(cpf=cpf_paciente).first()
             if paciente and paciente.chave_acompanhante == codigo_acesso:
-                return redirect(url_for('historico'))
+                return ver_perfil(paciente.id)
         return render_template('login_acompanhante.html')
 
     @app.route("/logout", endpoint="logout")
