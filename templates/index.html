@@ -3,17 +3,17 @@
 
 {% block title %} Home {% endblock %}
 {% block body %}
-<a href="/logout">Sair</a>
 <div class="container" xmlns="http://www.w3.org/1999/html">
     <div class="row">
         <div class="col md-12">
             <div class="jumbotron p-3">
-                <h2>Manage      <b>Pacientes</b>  <button type="button" class="btn btn-primary"
-                data-bs-toggle="modal" data-bs-target="#cadmodal">Cadastrar Paciente</button></h2>
-                <a href="/cadastrar_medicamentos">Cadastrar Horários</a>
+                <h2><b>Lista de Pacientes</b></h2>
+                <button type="button" class="btn btn-primary"
+                data-bs-toggle="modal" data-bs-target="#cadmodal">Cadastrar Paciente</button>
+                <a class="btn btn-primary" href="/cadastrar_medicamentos">Cadastrar Horários</a>
+                <a class="btn btn-primary" href="/logout">Sair</a>
                 <table class="table table-hover table-dark">
                     <tr>
-                        <th>ID</th>
                         <th>Nome</th>
                         <th>Data de Nascimento</th>
                         <th>Observação</th>
@@ -21,12 +21,11 @@
                     </tr>
                     {% for row in patients %}
                     <tr>
-                        <td>{{row.id}}</td>
                         <td>{{row.name}}</td>
                         <td>{{row.birth_date.strftime('%d/%m/%Y')}}</td>
                         <td>{{row.observation}}</td>
                         <td>
-                            <a href="/update/{{row.id}}" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#editmodal{{row.id}}">Edit</a>
+                            <a href="/update/{{row.id}}" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#editmodal{{row.id}}">Editar</a>
                             <div id="editmodal{{row.id}}" class="modal fade" role="dialog">
                                 <div class="modal-dialog">
                                     <div class="modal-content">

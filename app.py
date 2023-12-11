@@ -8,7 +8,7 @@ import pandas as pd
 import requests
 
 from secrets import token_hex
-from datetime import datetime
+from datetime import datetime, date
 
 from flask import Flask, render_template, request, url_for, redirect, session, abort
 from flask_smorest import Api
@@ -21,7 +21,7 @@ from flask_migrate import Migrate
 
 def create_app(db_url=None):
     """Configurações da Aplicação e Rotas de Acesso"""
-    app = Flask(__name__, template_folder="templates")
+    app = Flask(__name__, template_folder="templates", static_folder="static")
     load_dotenv()
     app.config["SECRET_KEY"] = "SECRet"
     app.config["PROPAGATE_EXCEPTIONS"] = True
@@ -130,15 +130,16 @@ def create_app(db_url=None):
         db.session.add(posologia)
         db.session.commit()
 
+        divisao_dia = 24 / int(posologia.frequencia)
         gmt = time.gmtime()
         ts = calendar.timegm(gmt)
-        divisao_dia = 24 / int(posologia.duracao)
-        for i in range(int(posologia.frequencia)):
+        for i in range(int(posologia.frequencia) * int(posologia.duracao)):
             horario = HorarioModel()
             horario.data = datetime.now()
             horario.posologias = PosologiaModel.query.filter_by(id_paciente=posologia.pacientes.id).first()
             horario.tomou = False
             horario.hora = datetime.fromtimestamp(ts)
+            print(ts)
             print(ts)
             ts += divisao_dia*3600
             db.session.add(horario)
@@ -168,7 +169,19 @@ def create_app(db_url=None):
     def ver_perfil(id_patient):
         paciente = PacienteModel.query.get_or_404(id_patient)
         posologias = PosologiaModel.query.filter_by(id_paciente=id_patient)
-        return render_template("perfil_paciente.html", paciente=paciente, posologias=posologias)
+        horarios = []
+        for row in posologias:
+            horario = HorarioModel.query.filter_by(id_posologia=row.id)
+            horarios.append(horario)
+        hoje = datetime.now()
+        return render_template("perfil_paciente.html", paciente=paciente, posologias=posologias, horarios=horarios, data=hoje)
+
+    @app.route("/mudar_status_tomada/<id_horario>", endpoint="mudar_status_tomada")
+    def mudar_status_tomada(id_horario):
+        horario = HorarioModel.query.get(id_horario)
+        horario.tomou = True
+        db.session.commit()
+        return ver_perfil(horario.posologias.pacientes.id)
 
     if __name__ == "__main__":
         app.run()

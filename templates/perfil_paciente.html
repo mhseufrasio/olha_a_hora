@@ -7,7 +7,7 @@
         <th>{{paciente.name}}</th>
     </tr>
     <tr>
-        <th>{{paciente.birth_date}}</th>
+        <th>{{paciente.birth_date.strftime('%d/%m/%Y')}}</th>
     </tr>
     <tr>
         <th>{{paciente.observation}}</th>
@@ -28,6 +28,29 @@
                         <td>{{row.duracao}}</td>
                     </tr>
                     {% endfor %}
-                </table>
+</table>
 
+<table class="table table-hover table-dark">
+                    <tr>
+                        <th>Medicamento</th>
+                        <th>Horário</th>
+                        <th>Tomou?</th>
+                    </tr>
+                    {% for row in horarios %}
+                    {% for col in row %}
+                    <tr>
+                        {% if col.hora.strftime('%d/%m/%Y') == data.strftime('%d/%m/%Y')%}
+                        <td>{{col.posologias.medicamento.nome}}</td>
+                        <td>{{col.hora.strftime('%HH:%mm')}}</td>
+                        {% if col.tomou == False %}
+                        <td><a class="btn btn-primary" href="/mudar_status_tomada/{{col.id}}">Confirmar</a></td>
+                        {% endif %}
+                        {% if col.tomou == True %}
+                            <td>Sim</td>
+                        {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+    {% endfor %}
+</table>
 {% endblock %}
